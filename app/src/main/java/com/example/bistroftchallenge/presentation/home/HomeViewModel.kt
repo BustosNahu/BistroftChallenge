@@ -3,14 +3,18 @@ package com.example.bistroftchallenge.presentation.home
 import android.util.Log
 import androidx.lifecycle.SAVED_STATE_REGISTRY_OWNER_KEY
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.bistroftchallenge.core.base.BaseViewModel
 import com.example.bistroftchallenge.data.utils.network.ApiResponse
 import com.example.bistroftchallenge.domain.UseCases.FactorialUseCase
+import com.example.bistroftchallenge.domain.model.User
 import com.example.bistroftchallenge.domain.repository.JokeRepository
 import com.example.bistroftchallenge.domain.repository.LifecycleEventRepository
+import com.example.bistroftchallenge.domain.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.security.interfaces.RSAMultiPrimePrivateCrtKey
 import javax.inject.Inject
 import kotlin.math.log
 
@@ -18,11 +22,25 @@ import kotlin.math.log
 class HomeViewModel @Inject constructor(
     private val lifecycleEventRepository: LifecycleEventRepository,
     private val jokeRepository: JokeRepository,
-    private val factorialUseCase: FactorialUseCase
+    private val factorialUseCase: FactorialUseCase,
+    private val userRepository: UserRepository
 ) : BaseViewModel<HomeUiState>() {
 
     init {
         getLifecycleEvents()
+        getUser()
+    }
+
+    private fun getUser() {
+        viewModelScope.launch {
+            userRepository.getUser().collect { user ->
+                _state.update {
+                    it.copy(
+                        user = user
+                    )
+                }
+            }
+        }
     }
 
     private fun getLifecycleEvents() {
@@ -44,6 +62,13 @@ class HomeViewModel @Inject constructor(
             HomeEvents.OnConsumeDataClick -> getJoke()
             is HomeEvents.OnNumberTextFieldChange -> updateNumberTextField(event.number)
             HomeEvents.OnClearLifecycle -> clearRoomDb()
+            HomeEvents.OnLogout -> deleteUserName()
+        }
+    }
+
+    private fun deleteUserName() {
+        viewModelScope.launch {
+            userRepository.setUserData(User(""))
         }
     }
 

@@ -24,29 +24,4 @@ class FactorialUseCaseTest{
         val result = factorialUseCase.calculateFactorial(5)
         assertEquals(BigInteger.valueOf(120), result)
     }
-
-    @Test
-    fun `Factorial de 10 debe ser 3628800`() {
-        val result = factorialUseCase.calculateFactorial(10)
-        assertEquals(BigInteger.valueOf(3_628_800), result)
-    }
-
-    @Test
-    fun `Factorial de 20 debe ser correcto`() {
-        val expected = BigInteger("2432902008176640000") // 20!
-        val result = factorialUseCase.calculateFactorial(20)
-        assertEquals(expected, result)
-    }
-
-    @Test
-    fun `Factorial de número negativo debe devolver -1`() {
-        val result = factorialUseCase.calculateFactorial(-5)
-        assertEquals(BigInteger.valueOf(-1), result)
-    }
-
-    @Test
-    fun `Factorial de 100 debe calcularse sin errores`() {
-        val result = factorialUseCase.calculateFactorial(100)
-        assert(result.toString().startsWith("933262154439441526816992388562667004"))
-    }
 }

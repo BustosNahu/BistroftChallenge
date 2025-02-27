@@ -22,7 +22,8 @@ fun BistroftTextField(
     label: String,
     onValueChange: (String) -> Unit,
     isError: Boolean = false,
-    supportingText: String = ""
+    supportingText: String = "",
+    isNumberTextField: Boolean = true
 ) {
     OutlinedTextField(
         value = text,
@@ -57,7 +58,8 @@ fun BistroftTextField(
         },
         singleLine = true,
         keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Number
+            keyboardType = if (isNumberTextField) KeyboardType.Number else KeyboardType.Text
         )
+
     )
 }
