@@ -19,7 +19,7 @@ import com.example.bistroftchallenge.presentation.main.WelcomeScreen
 fun NavGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = ScreenRoutes.WelcomeScreen.route, //TODO():Change it to WelcomeScreen later
+        startDestination = ScreenRoutes.WelcomeScreen.route,
         enterTransition = {
             slideInHorizontally(tween(700)) { 1090 }
         },

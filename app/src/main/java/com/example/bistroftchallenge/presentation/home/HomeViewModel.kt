@@ -94,7 +94,6 @@ class HomeViewModel @Inject constructor(
                     isCalculateFactorialLoading = false
                 )
             }
-            Log.d("FACTORIAL", "calculateNumberFactorial: ${state.value.factorialNumberResult}")
         } else {
             _state.update {
                 it.copy(

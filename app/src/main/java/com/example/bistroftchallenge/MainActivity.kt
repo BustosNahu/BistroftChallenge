@@ -25,7 +25,6 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var lifecycleObserver: AppLifecycleObserver
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

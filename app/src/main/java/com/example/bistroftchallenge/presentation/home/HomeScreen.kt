@@ -116,7 +116,6 @@ private fun HomeScreenChild(
                         )
 
                         IconButton(onClick = {
-//                            onEvent(HomeEvents.OnLogout)
                             goBack()
                         }, Modifier.padding(top = 36.dp)) {
                             Icon(

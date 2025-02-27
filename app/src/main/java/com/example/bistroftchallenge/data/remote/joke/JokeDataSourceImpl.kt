@@ -19,13 +19,11 @@ class JokeDataSourceImpl @Inject constructor(
     private val client: HttpClient
 ): JokeDataSource {
     override suspend fun getJoke(): ApiResponse<JokeDto> {
-        Log.d("JOKE", "getJoke: ESTOY")
         return try {
             val response = client.get(PROGRAMMING_JOKE_URL){
                 contentType(ContentType.Application.Json)
                 parameter("lang", "es")
             }
-            Log.d("JOKE", "getJoke DATA : $response")
             return if(response.status == HttpStatusCode.OK){
                 val responseBody = response.body<JokeDto>()
                 ApiResponse.Success(responseBody)
@@ -33,7 +31,6 @@ class JokeDataSourceImpl @Inject constructor(
                 ApiResponse.Error("Error getting joke")
             }
         }catch (e: Exception){
-            Log.d("JOKE", "getJoke: EX $e")
             handleApiException(e)
         }
     }
