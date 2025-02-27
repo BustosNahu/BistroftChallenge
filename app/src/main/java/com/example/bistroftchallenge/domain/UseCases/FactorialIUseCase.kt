@@ -1,10 +1,20 @@
 package com.example.bistroftchallenge.domain.UseCases
 
+import java.math.BigInteger
 import javax.inject.Inject
 
 class FactorialUseCase @Inject constructor() {
-    fun calculateFactorial(number: Int): Long {
-        if (number < 0) return -1
-        return if (number == 0 || number == 1) 1 else (1..number).fold(1L) { acc, i -> acc * i }
+    fun calculateFactorial(n: Int): BigInteger {
+        if (n < 0) retgit urn BigInteger.valueOf(-1)
+
+        var result = BigInteger.ONE
+        var i = n
+
+        while (i > 1) {
+            result *= BigInteger.valueOf(i.toLong())
+            i--
+        }
+
+        return result
     }
 }
