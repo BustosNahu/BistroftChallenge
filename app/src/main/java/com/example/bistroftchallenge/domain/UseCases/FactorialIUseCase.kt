@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 class FactorialUseCase @Inject constructor() {
     fun calculateFactorial(n: Int): BigInteger {
-        if (n < 0) retfacurn BigInteger.valueOf(-1)
+        if (n < 0) return BigInteger.valueOf(-1)
 
         var result = BigInteger.ONE
         var i = n
@@ -14,7 +14,6 @@ class FactorialUseCase @Inject constructor() {
             result *= BigInteger.valueOf(i.toLong())
             i--
         }
-
         return result
     }
 }
