@@ -69,7 +69,7 @@ private fun HomeScreenChild(
             coroutineScope.launch {
                 snackbarHostState.showSnackbar(
                     message = uiState.value.jokeMessage,
-                    duration = SnackbarDuration.Long
+                    duration = SnackbarDuration.Short
                 )
             }
         } else if (uiState.value.factorialNumberResult.isNotEmpty()) {
@@ -102,7 +102,7 @@ private fun HomeScreenChild(
                     verticalArrangement = Arrangement.spacedBy(90.dp)
                 ) {
                     Text(
-                        text = "¡Hola Nahuel!",
+                        text = "¡Hola!",
                         modifier = Modifier.padding(top = 40.dp),
                         fontSize = 28.sp
                     )
