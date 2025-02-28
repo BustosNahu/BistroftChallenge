@@ -16,7 +16,7 @@ class LifecycleEventRepositoryImpl @Inject constructor(
     }
 
     override fun getAllEvents(): Flow<List<LifecycleEvent>> {
-        return dao.getAllEvents().map { list -> list.map { it.toDomain() } }
+            return dao.getAllEvents().map { list -> list.map { it.toDomain() } }
     }
 
     override suspend fun clearAllEvents() {

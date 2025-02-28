@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -52,6 +53,9 @@ fun HomeScreen(
     HomeScreenChild(
         uiState = viewModel.state.collectAsStateWithLifecycle(),
         onEvent = viewModel::handleEvent,
+        goBack = {
+            navController.popBackStack()
+        }
     )
 }
 
@@ -60,25 +64,26 @@ fun HomeScreen(
 private fun HomeScreenChild(
     uiState: State<HomeUiState>,
     onEvent: (HomeEvents) -> Unit,
+    goBack: () -> Unit
 ) {
+
+    val context = LocalContext.current
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(uiState.value.joke, uiState.value.factorialNumberResult) {
+    LaunchedEffect(uiState.value.joke) {
         if (uiState.value.joke != null) {
             coroutineScope.launch {
                 snackbarHostState.showSnackbar(
                     message = uiState.value.jokeMessage,
-                    duration = SnackbarDuration.Long
-                )
-            }
-        } else if (uiState.value.factorialNumberResult.isNotEmpty()) {
-            coroutineScope.launch {
-                snackbarHostState.showSnackbar(
-                    message = uiState.value.factorialNumberResult,
                     duration = SnackbarDuration.Short
                 )
             }
+        }
+    }
+    LaunchedEffect(uiState.value.factorialNumberResult) {
+        if (uiState.value.factorialNumberResult.isNotEmpty()) {
+            Toast.makeText(context, uiState.value.factorialNumberResult, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -101,11 +106,25 @@ private fun HomeScreenChild(
                         .padding(horizontal = 10.dp),
                     verticalArrangement = Arrangement.spacedBy(90.dp)
                 ) {
-                    Text(
-                        text = "¡Hola Nahuel!",
-                        modifier = Modifier.padding(top = 40.dp),
-                        fontSize = 28.sp
-                    )
+                    Row(Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = "¡Hola ${uiState.value.user?.name}!",
+                            modifier = Modifier.padding(top = 40.dp),
+                            fontSize = 28.sp
+                        )
+
+                        IconButton(onClick = {
+                            goBack()
+                        }, Modifier.padding(top = 36.dp)) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_arrow_circle_left_24),
+                                contentDescription = "Logout",
+                                modifier = Modifier.size(50.dp),)
+                        }
+                    }
+
                     Column {
                         BistroftTextField(
                             text = uiState.value.textFieldNumber,

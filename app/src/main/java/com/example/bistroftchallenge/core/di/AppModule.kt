@@ -5,13 +5,17 @@ import androidx.room.Room
 import com.example.bistroftchallenge.core.lifecycle.AppLifecycleObserver
 import com.example.bistroftchallenge.data.local.lifecycle.LifecycleEventDao
 import com.example.bistroftchallenge.data.local.lifecycle.LifecycleEventDatabase
+import com.example.bistroftchallenge.data.local.user.UserDao
+import com.example.bistroftchallenge.data.local.user.UserDatabase
 import com.example.bistroftchallenge.data.remote.joke.JokeDataSource
 import com.example.bistroftchallenge.data.remote.joke.JokeDataSourceImpl
 import com.example.bistroftchallenge.data.repository.JokeRepositoryImpl
 import com.example.bistroftchallenge.data.repository.LifecycleEventRepositoryImpl
+import com.example.bistroftchallenge.data.repository.UserRepositoryImpl
 import com.example.bistroftchallenge.domain.UseCases.FactorialUseCase
 import com.example.bistroftchallenge.domain.repository.JokeRepository
 import com.example.bistroftchallenge.domain.repository.LifecycleEventRepository
+import com.example.bistroftchallenge.domain.repository.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,10 +50,26 @@ object AppModule {
         ).build()
     }
 
+    @Provides
+    @Singleton
+    fun provideUserDatabase(@ApplicationContext context: Context): UserDatabase {
+        return Room.databaseBuilder(
+            context.applicationContext,
+            UserDatabase::class.java,
+            "user_database"
+        ).build()
+    }
+
     @Singleton
     @Provides
     fun provideLifecycleEventDao(database: LifecycleEventDatabase): LifecycleEventDao {
         return database.lifecycleEventDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserDao(database: UserDatabase): UserDao {
+        return database.userDao()
     }
 
     @Singleton
@@ -72,6 +92,12 @@ object AppModule {
     @Provides
     fun provideJokeRepository(jokeDataSource: JokeDataSource): JokeRepository =
         JokeRepositoryImpl(jokeDataSource)
+
+    @Singleton
+    @Provides
+    fun provideUserRepository(dao: UserDao): UserRepository {
+        return UserRepositoryImpl(dao)
+    }
 
     @Provides
     @Singleton
